@@ -48,4 +48,17 @@ public class TranslatorEndpointTest {
 		assertThat(response, instanceOf(GetTranslationResponse.class));
 		assertThat(((GetTranslationResponse) response).getTranslation(), is("Esto es una prueba de servicio de traducción"));
 	}	
+	
+	@Test
+	public void testSendAndReceive2() {
+		GetTranslationRequest request = new GetTranslationRequest();
+		request.setLangFrom("es");
+		request.setLangTo("fr");
+		request.setText("El fútbol es lo mejor");
+		Object response = new WebServiceTemplate(marshaller).marshalSendAndReceive("http://localhost:"
+				+ port + "/ws", request);
+		assertNotNull(response);	
+		assertThat(((GetTranslationResponse) response).getResultCode(), is("ok"));
+		assertThat(((GetTranslationResponse) response).getTranslation(), is("Le football est le meilleur"));
+	}		
 }
